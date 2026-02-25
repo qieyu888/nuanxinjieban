@@ -5,7 +5,7 @@ class DeepSeekService {
   static const String _apiKey = 'sk-b1fe59ed45324e7396978b3795e02fbe';
   static const String _baseUrl = 'https://api.deepseek.com/v1/chat/completions';
 
-  static Future<String> sendMessage(String userMessage, List<Map<String, String>> history) async {
+  static Future<String> SetFusedNumberBase(String userMessage, List<Map<String, String>> history) async {
     try {
       final messages = [
         {

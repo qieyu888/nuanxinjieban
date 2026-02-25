@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/colors.dart';
 import '../../models/message.dart';
 import '../../services/deepseek_service.dart';
+import '../star_shop_screen.dart';
 
 class AIChatTab extends StatefulWidget {
   const AIChatTab({super.key});
@@ -15,16 +17,38 @@ class _AIChatTabState extends State<AIChatTab> {
   final ScrollController _scrollController = ScrollController();
   final List<Message> _messages = [];
   bool _isLoading = false;
+  int _starBalance = 600;
+  static const int _costPerMessage = 10;
 
   @override
   void initState() {
     super.initState();
+    _loadStarBalance();
     _messages.add(
       Message(
         role: 'ai',
-        text: '嗨！我是小暖 👋\n\n你的旅行小伙伴～\n\n我能帮你：\n• 发现好玩的地方\n• 找到志同道合的旅伴\n• 分享旅行故事和攻略\n• 解答旅途中的各种问题\n\n想聊点什么呢？',
+        text: '嗨！我是小暖 👋\n\n你的旅行小伙伴～\n\n我能帮你：\n• 发现好玩的地方\n• 找到志同道合的旅伴\n• 分享旅行故事和攻略\n• 解答旅途中的各种问题\n\n想聊点什么呢？\n\n💫 每次对话消耗 $_costPerMessage 颗星星',
       ),
     );
+  }
+
+  Future<void> _loadStarBalance() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _starBalance = prefs.getInt('accountGemBalance') ?? 600;
+    });
+  }
+
+  Future<void> _saveStarBalance() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('accountGemBalance', _starBalance);
+  }
+
+  Future<void> _consumeStars() async {
+    setState(() {
+      _starBalance -= _costPerMessage;
+    });
+    await _saveStarBalance();
   }
 
   @override
@@ -37,6 +61,12 @@ class _AIChatTabState extends State<AIChatTab> {
   void _sendMessage() async {
     if (_inputController.text.trim().isEmpty || _isLoading) return;
 
+    // 检查星星余额
+    if (_starBalance < _costPerMessage) {
+      _showInsufficientStarsDialog();
+      return;
+    }
+
     final userMessage = _inputController.text.trim();
     _inputController.clear();
 
@@ -46,6 +76,9 @@ class _AIChatTabState extends State<AIChatTab> {
     });
 
     _scrollToBottom();
+
+    // 消耗星星
+    await _consumeStars();
 
     // 构建对话历史
     final history = _messages
@@ -57,7 +90,7 @@ class _AIChatTabState extends State<AIChatTab> {
         .toList();
 
     try {
-      final aiResponse = await DeepSeekService.sendMessage(userMessage, history);
+      final aiResponse = await DeepSeekService.SetFusedNumberBase(userMessage, history);
 
       if (mounted) {
         setState(() {
@@ -87,6 +120,104 @@ class _AIChatTabState extends State<AIChatTab> {
         _scrollToBottom();
       }
     }
+  }
+
+  void _showInsufficientStarsDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.stars_rounded,
+              color: AppColors.primary,
+              size: 28,
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              '星星不足',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '当前余额：$_starBalance 颗星星',
+              style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '每次对话需要：$_costPerMessage 颗星星',
+              style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              '需要充值星星才能继续对话哦～',
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.textLight,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              '取消',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const StarShopScreen(),
+                ),
+              ).then((_) => _loadStarBalance());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 12,
+              ),
+            ),
+            child: const Text(
+              '去充值',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void _scrollToBottom() {
@@ -163,6 +294,48 @@ class _AIChatTabState extends State<AIChatTab> {
                           ],
                         ),
                       ],
+                    ),
+                  ),
+                  // 星星余额显示
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const StarShopScreen(),
+                        ),
+                      ).then((_) => _loadStarBalance());
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFFFB74D), Color(0xFFFF9800)],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '$_starBalance',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

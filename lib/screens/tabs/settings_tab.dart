@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 import '../../constants/colors.dart';
 import '../../data/mock_data.dart';
+import '../star_shop_screen.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
@@ -162,6 +163,18 @@ class _SettingsTabState extends State<SettingsTab> {
                 '通用设置',
                 [
                   _SettingItem(
+                    icon: Icons.stars_rounded,
+                    label: '星星充值',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const StarShopScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  _SettingItem(
                     icon: Icons.storage_outlined,
                     label: '清除缓存',
                     value: '124.5 MB',
@@ -197,7 +210,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   _SettingItem(
                     icon: Icons.info_outline,
                     label: '关于暖途',
-                    value: 'v1.0.0',
+                    value: 'v1.0.1',
                     onTap: () => _showAbout(context),
                   ),
                   _SettingItem(
@@ -727,7 +740,7 @@ class _SettingsTabState extends State<SettingsTab> {
         content: const SingleChildScrollView(
           child: Text(
             '暖途隐私政策\n\n'
-            '更新日期：2024年1月\n\n'
+            '更新日期：2026年1月\n\n'
             '1. 信息收集\n'
             '我们会收集您的基本信息、使用数据等，用于提供更好的服务。\n\n'
             '2. 信息使用\n'
@@ -784,7 +797,7 @@ class _SettingsTabState extends State<SettingsTab> {
             ),
             const SizedBox(height: 8),
             const Text(
-              'v1.0.0',
+              'v1.0.1',
               style: TextStyle(
                 fontSize: 12,
                 color: AppColors.textLight,
@@ -804,7 +817,7 @@ class _SettingsTabState extends State<SettingsTab> {
             const Divider(),
             const SizedBox(height: 8),
             const Text(
-              '© 2024 WarmTrip. All rights reserved.',
+              '© 2026 WarmTrip. All rights reserved.',
               style: TextStyle(
                 fontSize: 11,
                 color: AppColors.textLight,
