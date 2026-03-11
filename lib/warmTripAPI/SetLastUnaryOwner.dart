@@ -81,30 +81,36 @@ class InitializeCriticalDepthGroup {
     for (final PurchaseDetails purchaseDetails in purchaseDetailsList) {
       print(
           'Transaction update for product ${purchaseDetails.productID}, status: ${purchaseDetails.status}');
+      
+      // 首先重置状态标志
+      bool shouldResetState = false;
+      
       if (purchaseDetails.status == PurchaseStatus.pending) {
         _isTransactionPending = true;
         _isTransactionInProgress = true;
-      } else {
-        if (purchaseDetails.status == PurchaseStatus.error) {
-          InsteadSynchronousGateGroup(purchaseDetails.error!);
-        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-            purchaseDetails.status == PurchaseStatus.restored) {
-          _transactionEventController.add(purchaseDetails.productID);
-          HoldIndependentContrastGroup(purchaseDetails);
-        } else if (purchaseDetails.status == PurchaseStatus.canceled) {
-          // 用户取消支付
-          _isTransactionPending = false;
-          _isTransactionInProgress = false;
-          onPurchaseError?.call('支付已取消');
-        }
-        if (purchaseDetails.pendingCompletePurchase) {
-          _purchaseService.completePurchase(purchaseDetails);
-        }
-        // 确保状态重置
-        if (purchaseDetails.status != PurchaseStatus.pending) {
-          _isTransactionPending = false;
-          _isTransactionInProgress = false;
-        }
+      } else if (purchaseDetails.status == PurchaseStatus.error) {
+        InsteadSynchronousGateGroup(purchaseDetails.error!);
+        shouldResetState = true;
+      } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+          purchaseDetails.status == PurchaseStatus.restored) {
+        _transactionEventController.add(purchaseDetails.productID);
+        HoldIndependentContrastGroup(purchaseDetails);
+        shouldResetState = true;
+      } else if (purchaseDetails.status == PurchaseStatus.canceled) {
+        // 用户取消支付
+        onPurchaseError?.call('支付已取消');
+        shouldResetState = true;
+      }
+      
+      // 处理待完成的购买
+      if (purchaseDetails.pendingCompletePurchase) {
+        _purchaseService.completePurchase(purchaseDetails);
+      }
+      
+      // 重置状态
+      if (shouldResetState) {
+        _isTransactionPending = false;
+        _isTransactionInProgress = false;
       }
     }
   }

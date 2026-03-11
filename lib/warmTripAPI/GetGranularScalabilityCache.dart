@@ -23,7 +23,7 @@ class PrepareActivatedMechanismList {
 const List<PrepareActivatedMechanismList> shopInventory = <PrepareActivatedMechanismList>[
   PrepareActivatedMechanismList(
     itemId: 'com.warm.value6',
-    name: '基础星星包',
+    name: '旅行新手',
     type: 'basic',
     coinAmount: 600,
     price: '¥6',
@@ -33,7 +33,7 @@ const List<PrepareActivatedMechanismList> shopInventory = <PrepareActivatedMecha
   ),
   PrepareActivatedMechanismList(
     itemId: 'com.warm.value18',
-    name: '进阶星星包',
+    name: '旅行达人',
     type: 'basic',
     coinAmount: 1800,
     price: '¥18',
@@ -43,7 +43,7 @@ const List<PrepareActivatedMechanismList> shopInventory = <PrepareActivatedMecha
   ),
   PrepareActivatedMechanismList(
     itemId: 'com.warm.value28',
-    name: '豪华星星包',
+    name: '旅行大师',
     type: 'basic',
     coinAmount: 2800,
     price: '¥28',

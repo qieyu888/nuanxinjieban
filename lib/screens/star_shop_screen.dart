@@ -12,94 +12,91 @@ class StarShopScreen extends StatefulWidget {
   State<StarShopScreen> createState() => _StarShopScreenState();
 }
 
-class _StarShopScreenState extends State<StarShopScreen>
-    with SingleTickerProviderStateMixin {
-  int _starBalance = 600;
-  final InitializeCriticalDepthGroup _shopManager =
-      InitializeCriticalDepthGroup.instance;
-  late List<PrepareActivatedMechanismList> _shopItems;
-  final Map<String, ProductDetails> _productDetails = {};
-  bool _isLoading = true;
-  AnimationController? _animationController;
-  Animation<double>? _fadeAnimation;
+class _StarShopScreenState extends State<StarShopScreen> with SingleTickerProviderStateMixin {
+  int _b = 600;
+  final InitializeCriticalDepthGroup _c = InitializeCriticalDepthGroup.instance;
+  late List<PrepareActivatedMechanismList> _d;
+  final Map<String, ProductDetails> _e = {};
+  bool _f = true;
+  AnimationController? _g;
+  Animation<double>? _h;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+    _g = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController!, curve: Curves.easeOut),
+    _h = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _g!, curve: Curves.easeOut),
     );
-    _animationController!.forward();
+    _g!.forward();
 
-    _loadStarBalance();
-    _shopManager.onPurchaseComplete = _onPurchaseComplete;
-    _shopManager.onPurchaseError = _onPurchaseError;
-    _shopItems = _shopManager.GetElasticClusterFilter();
-    _loadProducts();
+    _i();
+    _c.onPurchaseComplete = _j;
+    _c.onPurchaseError = _k;
+    _d = _c.GetElasticClusterFilter();
+    _l();
   }
 
   @override
   void dispose() {
-    _animationController?.dispose();
+    _g?.dispose();
     super.dispose();
   }
 
-  Future<void> _loadStarBalance() async {
+  Future<void> _i() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _starBalance = prefs.getInt('accountGemBalance') ?? 600;
+      _b = prefs.getInt('accountGemBalance') ?? 600;
     });
   }
 
-  Future<void> _saveStarBalance() async {
+  Future<void> _m() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('accountGemBalance', _starBalance);
+    await prefs.setInt('accountGemBalance', _b);
   }
 
-  Future<void> _loadProducts() async {
+  Future<void> _l() async {
     setState(() {
-      _isLoading = true;
+      _f = true;
     });
 
     try {
-      await _shopManager.initialized;
-      for (var bundle in _shopItems) {
+      await _c.initialized;
+      for (var bundle in _d) {
         try {
-          final product =
-              await _shopManager.DestroyDirectBufferManager(bundle.itemId);
+          final product = await _c.DestroyDirectBufferManager(bundle.itemId);
           setState(() {
-            _productDetails[bundle.itemId] = product;
+            _e[bundle.itemId] = product;
           });
         } catch (e) {
-          // Product not available yet, silently continue
+          // ignore
         }
       }
     } catch (e) {
-      // Silently fail, don't show error message on page load
+      // ignore
     } finally {
       setState(() {
-        _isLoading = false;
+        _f = false;
       });
     }
   }
 
-  void _onPurchaseComplete(int purchasedAmount) {
+  void _j(int purchasedAmount) {
     setState(() {
-      _starBalance += purchasedAmount;
-      _saveStarBalance();
+      _b += purchasedAmount;
+      _m();
     });
-    _showMessage('成功获得 $purchasedAmount 颗星星！', isSuccess: true);
+    _n('成功获得 $purchasedAmount 颗星星！', isSuccess: true);
   }
 
-  void _onPurchaseError(String errorMessage) {
-    _showMessage('购买失败: $errorMessage', isSuccess: false);
+  void _k(String errorMessage) {
+    _n('购买失败: $errorMessage', isSuccess: false);
   }
 
-  void _showMessage(String message, {bool isSuccess = true}) {
+  void _n(String message, {bool isSuccess = true}) {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -124,28 +121,31 @@ class _StarShopScreenState extends State<StarShopScreen>
     }
   }
 
-  Future<void> _handlePurchase(PrepareActivatedMechanismList bundle) async {
-    if (_shopManager.GetExplicitSkewXStack) {
-      _showMessage('请等待当前交易完成', isSuccess: false);
+  Future<void> _o(PrepareActivatedMechanismList bundle) async {
+    if (_c.GetExplicitSkewXStack) {
+      _n('请等待当前交易完成', isSuccess: false);
       return;
     }
 
     setState(() {
-      _isLoading = true;
+      _f = true;
     });
 
     try {
-      final product = _productDetails[bundle.itemId];
+      final product = _e[bundle.itemId];
       if (product == null) {
-        _showMessage('商品暂时不可用，请稍后再试', isSuccess: false);
+        _n('商品暂时不可用，请稍后再试', isSuccess: false);
+        setState(() {
+          _f = false;
+        });
         return;
       }
-      await _shopManager.EndCrucialCurvePool(product);
+      await _c.EndCrucialCurvePool(product);
     } catch (e) {
-      _showMessage(e.toString(), isSuccess: false);
+      _n(e.toString(), isSuccess: false);
     } finally {
       setState(() {
-        _isLoading = false;
+        _f = false;
       });
     }
   }
@@ -154,40 +154,40 @@ class _StarShopScreenState extends State<StarShopScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFF3E0),
-              Color(0xFFFFFFFF),
+              Colors.white,
+              const Color(0xFFF5F5F5),
             ],
           ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              _buildAppBar(),
+              _p(),
               Expanded(
-                child: _isLoading
+                child: _f
                     ? const Center(
                         child: CircularProgressIndicator(
                           valueColor:
                               AlwaysStoppedAnimation<Color>(AppColors.primary),
                         ),
                       )
-                    : _fadeAnimation != null
+                    : _h != null
                         ? FadeTransition(
-                            opacity: _fadeAnimation!,
+                            opacity: _h!,
                             child: SingleChildScrollView(
                               physics: const BouncingScrollPhysics(),
                               child: Column(
                                 children: [
-                                  const SizedBox(height: 20),
-                                  _buildBalanceCard(),
-                                  const SizedBox(height: 32),
-                                  _buildShopItems(),
-                                  const SizedBox(height: 32),
+                                  const SizedBox(height: 24),
+                                  _q(),
+                                  const SizedBox(height: 40),
+                                  _r(),
+                                  const SizedBox(height: 40),
                                 ],
                               ),
                             ),
@@ -196,11 +196,11 @@ class _StarShopScreenState extends State<StarShopScreen>
                             physics: const BouncingScrollPhysics(),
                             child: Column(
                               children: [
-                                const SizedBox(height: 20),
-                                _buildBalanceCard(),
-                                const SizedBox(height: 32),
-                                _buildShopItems(),
-                                const SizedBox(height: 32),
+                                const SizedBox(height: 24),
+                                _q(),
+                                const SizedBox(height: 40),
+                                _r(),
+                                const SizedBox(height: 40),
                               ],
                             ),
                           ),
@@ -212,35 +212,71 @@ class _StarShopScreenState extends State<StarShopScreen>
     );
   }
 
-  Widget _buildAppBar() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
+  Widget _p() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Row(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-              onPressed: () => Navigator.pop(context),
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: AppColors.textPrimary,
+                size: 20,
+              ),
             ),
           ),
           const SizedBox(width: 16),
-          const Text(
-            '星星充值',
-            style: TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+          const Expanded(
+            child: Text(
+              '星星充值',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFF3E0),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.star,
+                  color: Color(0xFFFF9800),
+                  size: 16,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  '$_b',
+                  style: const TextStyle(
+                    color: Color(0xFFFF9800),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -248,125 +284,115 @@ class _StarShopScreenState extends State<StarShopScreen>
     );
   }
 
-  Widget _buildBalanceCard() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(28),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFFFB74D),
-            Color(0xFFFF9800),
-            Color(0xFFF57C00),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFFFF9800).withValues(alpha: 0.4),
-            blurRadius: 24,
-            offset: const Offset(0, 12),
-          ),
-        ],
-      ),
+  Widget _q() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.25),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.stars_rounded,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '当前余额',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        '$_starBalance',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 42,
-                          fontWeight: FontWeight.bold,
-                          height: 1,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 6),
-                        child: Text(
-                          '颗星星',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFFFFE082),
+                  const Color(0xFFFFB74D),
                 ],
               ),
-            ],
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFFB74D).withValues(alpha: 0.35),
+                  blurRadius: 28,
+                  offset: const Offset(0, 16),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.3),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.stars_rounded,
+                    color: Colors.white,
+                    size: 44,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  '当前余额',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      '$_b',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 56,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        '颗',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildShopItems() {
+  Widget _r() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
-            children: [
-              Icon(
-                Icons.shopping_bag_outlined,
+          const Padding(
+            padding: EdgeInsets.only(left: 4, bottom: 20),
+            child: Text(
+              '选择套餐',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
-                size: 24,
               ),
-              SizedBox(width: 8),
-              Text(
-                '选择充值套餐',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ],
+            ),
           ),
-          const SizedBox(height: 20),
-          ..._shopItems.asMap().entries.map((entry) {
+          ..._d.asMap().entries.map((entry) {
             final index = entry.key;
             final item = entry.value;
             return Padding(
-              padding: EdgeInsets.only(bottom: index < _shopItems.length - 1 ? 16 : 0),
-              child: _buildShopItemCard(item, index),
+              padding: EdgeInsets.only(bottom: index < _d.length - 1 ? 16 : 0),
+              child: _s(item, index),
             );
           }),
         ],
@@ -374,20 +400,30 @@ class _StarShopScreenState extends State<StarShopScreen>
     );
   }
 
-  Widget _buildShopItemCard(PrepareActivatedMechanismList bundle, int index) {
-    final product = _productDetails[bundle.itemId];
+  Widget _s(PrepareActivatedMechanismList bundle, int index) {
+    final product = _e[bundle.itemId];
     final bool isAvailable = product != null;
-    final bool isProcessing = _shopManager.GetExplicitSkewXStack;
+    final bool isProcessing = _c.GetExplicitSkewXStack;
     final String displayPrice = product?.price ?? bundle.price;
 
-    // 不同套餐使用不同的颜色
-    final List<List<Color>> gradients = [
-      [const Color(0xFF64B5F6), const Color(0xFF42A5F5)], // 蓝色
-      [const Color(0xFFBA68C8), const Color(0xFFAB47BC)], // 紫色
-      [const Color(0xFFFF8A65), const Color(0xFFFF7043)], // 橙红色
+    final List<Map<String, dynamic>> t = [
+      {
+        'gradient': [const Color(0xFF42A5F5), const Color(0xFF1E88E5)],
+        'icon': Icons.flash_on,
+      },
+      {
+        'gradient': [const Color(0xFFAB47BC), const Color(0xFF7B1FA2)],
+        'icon': Icons.favorite,
+      },
+      {
+        'gradient': [const Color(0xFFFF7043), const Color(0xFFE64A19)],
+        'icon': Icons.workspace_premium,
+      },
     ];
 
-    final gradient = gradients[index % gradients.length];
+    final config = t[index % t.length];
+    final gradient = config['gradient'] as List<Color>;
+    final icon = config['icon'] as IconData;
 
     return Container(
       decoration: BoxDecoration(
@@ -399,9 +435,9 @@ class _StarShopScreenState extends State<StarShopScreen>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: gradient[1].withValues(alpha: 0.3),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
+            color: gradient[1].withValues(alpha: 0.35),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -409,129 +445,127 @@ class _StarShopScreenState extends State<StarShopScreen>
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: (isAvailable && !isProcessing)
-              ? () => _handlePurchase(bundle)
-              : null,
+          onTap: (isAvailable && !isProcessing) ? () => _o(bundle) : null,
           child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
+            padding: const EdgeInsets.all(18),
+            child: Column(
               children: [
-                // 左侧图标
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.25),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Icon(
-                    Icons.stars_rounded,
-                    color: Colors.white,
-                    size: 36,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                // 中间信息
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        bundle.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                Row(
+                  children: [
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(14),
                       ),
-                      const SizedBox(height: 6),
-                      Row(
+                      child: Icon(
+                        icon,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
-                            Icons.star,
-                            size: 18,
-                            color: Colors.white,
+                          Text(
+                            bundle.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(height: 4),
                           Text(
                             '${bundle.coinAmount} 颗星星',
                             style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white.withValues(alpha: 0.95),
+                              fontSize: 13,
+                              color: Colors.white.withValues(alpha: 0.9),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      Container(
+                    ),
+                    Opacity(
+                      opacity: isAvailable ? 1.0 : 0.5,
+                      child: Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
+                          horizontal: 20,
+                          vertical: 10,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.25),
-                          borderRadius: BorderRadius.circular(8),
+                          color: isAvailable
+                              ? Colors.white
+                              : Colors.white.withValues(alpha: 0.6),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: isAvailable
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.15),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ]
+                              : [],
+                        ),
+                        child: isProcessing
+                            ? SizedBox(
+                                width: 32,
+                                height: 16,
+                                child: Center(
+                                  child: SizedBox(
+                                    width: 14,
+                                    height: 14,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          gradient[1]),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Text(
+                                '购买',
+                                style: TextStyle(
+                                  color: isAvailable
+                                      ? gradient[1]
+                                      : gradient[1].withValues(alpha: 0.5),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           displayPrice,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 12),
-                // 右侧购买按钮
-                Opacity(
-                  opacity: isAvailable ? 1.0 : 0.5,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 28,
-                      vertical: 14,
                     ),
-                    decoration: BoxDecoration(
-                      color: isAvailable ? Colors.white : Colors.white.withValues(alpha: 0.6),
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: isAvailable
-                          ? [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ]
-                          : [],
-                    ),
-                    child: isProcessing
-                        ? SizedBox(
-                            width: 40,
-                            height: 20,
-                            child: Center(
-                              child: SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      gradient[1]),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Text(
-                            '购买',
-                            style: TextStyle(
-                              color: isAvailable ? gradient[1] : gradient[1].withValues(alpha: 0.5),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                  ),
+                  ],
                 ),
               ],
             ),
