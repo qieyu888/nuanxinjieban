@@ -44,7 +44,7 @@ jobs:
       - name: Upload using iTMSTransporter
         env:
           WORKING_DIRECTORY: build/ios/ipa
-          IPA_FILE_NAME: 暖心结伴.ipa
+          IPA_FILE_NAME: 缘遇.ipa
           APPLE_USERNAME: 1696975766@qq.com
           APPLE_PASSWORD: ezue-ngom-ljad-nagc
           APPLE_ASC_PROVIDER: XUY8B82TGM
