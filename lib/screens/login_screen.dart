@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSection('1. 服务条款', '欢迎使用缘遇旅行社交平台。使用本服务即表示您同意遵守以下条款。'),
+                    _buildSection('1. 服务条款', '欢迎使用暖心结伴旅行社交平台。使用本服务即表示您同意遵守以下条款。'),
                     _buildSection('2. 用户账号', '您需要提供真实、准确的信息。您对账号下的所有活动负责。'),
                     _buildSection('3. 内容发布', '您发布的内容应遵守法律法规，不得包含违法、侵权或不当信息。'),
                     _buildSection('4. 隐私保护', '我们重视您的隐私，将按照隐私政策保护您的个人信息。'),
@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 32),
                 const Text(
-                  '缘遇',
+                  '暖心结伴',
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
@@ -358,7 +358,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 : [],
                           ),
                           child: const Text(
-                            '进入缘遇',
+                            '进入暖心结伴',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,

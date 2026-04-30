@@ -34,7 +34,7 @@ class WarmTripApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '缘遇',
+      title: '暖途',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.orange,
@@ -104,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               SizedBox(height: 24),
               Text(
-                '缘遇',
+                '暖心结伴',
                 style: TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
