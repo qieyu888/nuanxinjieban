@@ -148,6 +148,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> with SingleTick
                             child: PostCard(
                               post: post,
                               onLike: () => _onLikePost(post.id),
+                              onPostUpdated: () => setState(() {}),
                             ),
                           );
                         },

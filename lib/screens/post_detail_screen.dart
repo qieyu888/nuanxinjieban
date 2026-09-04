@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import '../constants/colors.dart';
 import '../models/post.dart';
 import '../models/comment.dart';
+import '../data/mock_data.dart';
 
 class PostDetailScreen extends StatefulWidget {
   final Post post;
@@ -26,7 +26,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   void initState() {
     super.initState();
     _post = widget.post;
-    _comments = _generateMockComments();
+    _comments = MockData.getCommentsForPost(_post.id);
+    _post.comments = _comments.length;
   }
 
   @override
@@ -34,43 +35,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     _commentController.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  List<Comment> _generateMockComments() {
-    final random = Random();
-    final commentCount = _post.comments;
-    final List<Comment> comments = [];
-
-    final sampleComments = [
-      '太美了！我也想去！',
-      '照片拍得真好👍',
-      '请问什么时候去最合适？',
-      '收藏了，下次一定去',
-      '风景绝美，羡慕！',
-      '有攻略吗？求分享',
-      '这个地方真的值得一去',
-      '拍照技术太棒了',
-      '好想去啊，可惜没时间',
-      '已加入旅行清单',
-      '景色太震撼了',
-      '下个月就去！',
-    ];
-
-    for (int i = 0; i < commentCount; i++) {
-      comments.add(
-        Comment(
-          id: 'comment_$i',
-          user: '用户${random.nextInt(9999)}',
-          avatar: 'https://i.pravatar.cc/150?img=${random.nextInt(70) + 1}',
-          content: sampleComments[random.nextInt(sampleComments.length)],
-          timestamp: DateTime.now().subtract(Duration(hours: random.nextInt(48))),
-          likes: random.nextInt(50),
-          isLiked: random.nextBool(),
-        ),
-      );
-    }
-
-    return comments;
   }
 
   void _toggleLike() {

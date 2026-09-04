@@ -212,6 +212,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     child: PostCard(
                       post: post,
                       onLike: () => _onLikePost(post.id),
+                      onPostUpdated: () => setState(() {}),
                     ),
                   );
                 },

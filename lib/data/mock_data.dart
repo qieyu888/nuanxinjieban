@@ -1,8 +1,14 @@
 import '../models/destination.dart';
 import '../models/post.dart';
 import '../models/footprint.dart';
+import '../models/comment.dart';
+import 'post_comments.dart';
 
 class MockData {
+  static int _comments(String postId) => PostComments.countForPost(postId);
+
+  static List<Comment> getCommentsForPost(String postId) =>
+      PostComments.getForPost(postId);
   static List<Destination> getDestinations() {
     return [
       Destination(
@@ -25,6 +31,26 @@ class MockData {
         image: 'https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=400',
         description: '塞外江南',
       ),
+      Destination(
+        name: '杭州 · 西湖',
+        image: 'https://images.pexels.com/photos/1007426/pexels-photo-1007426.jpeg?auto=compress&cs=tinysrgb&w=400',
+        description: '人间天堂',
+      ),
+      Destination(
+        name: '北京 · 故宫',
+        image: 'https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg?auto=compress&cs=tinysrgb&w=400',
+        description: '千年古都',
+      ),
+      Destination(
+        name: '桂林 · 漓江',
+        image: 'https://images.pexels.com/photos/1659438/pexels-photo-1659438.jpeg?auto=compress&cs=tinysrgb&w=400',
+        description: '山水甲天下',
+      ),
+      Destination(
+        name: '三亚 · 亚龙湾',
+        image: 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=400',
+        description: '碧海蓝天',
+      ),
     ];
   }
 
@@ -38,7 +64,7 @@ class MockData {
         content: '在这里度过了一个完美的下午，阳光洒在水面上，波光粼粼的橘色真的太治愈了。✨ #大理旅游 #日落',
         image: 'https://images.pexels.com/photos/1659438/pexels-photo-1659438.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 1284,
-        comments: 5,
+        comments: _comments('1'),
         isLiked: false,
       ),
       Post(
@@ -49,7 +75,7 @@ class MockData {
         content: '虽然冷，但心是暖的。极光下的帐篷，是一辈子难忘的回忆。🧊🔥',
         image: 'https://images.pexels.com/photos/1933316/pexels-photo-1933316.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3560,
-        comments: 6,
+        comments: _comments('2'),
         isLiked: true,
       ),
       Post(
@@ -60,7 +86,7 @@ class MockData {
         content: '穿着和服漫步在清水寺，仿佛穿越到了古代。樱花季的京都真的太美了！🌸',
         image: 'https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2156,
-        comments: 3,
+        comments: _comments('3'),
         isLiked: false,
       ),
       Post(
@@ -71,7 +97,7 @@ class MockData {
         content: '跳伞的那一刻，整个世界都在脚下。这种自由的感觉无法用语言形容！🪂',
         image: 'https://images.pexels.com/photos/1659438/pexels-photo-1659438.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 4521,
-        comments: 4,
+        comments: _comments('4'),
         isLiked: true,
       ),
       Post(
@@ -82,7 +108,7 @@ class MockData {
         content: '站在海拔4718米的湖边，看着雪山倒映在湖面上，心灵得到了净化。🏔️',
         image: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2890,
-        comments: 2,
+        comments: _comments('5'),
         isLiked: false,
       ),
       Post(
@@ -93,7 +119,7 @@ class MockData {
         content: '火锅、串串、兔头...成都的美食让我流连忘返，已经胖了5斤了哈哈！🌶️',
         image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 1876,
-        comments: 6,
+        comments: _comments('6'),
         isLiked: false,
       ),
       Post(
@@ -104,7 +130,7 @@ class MockData {
         content: '玻璃栈道上的每一步都是挑战，但风景绝对值得！云雾缭绕的山峰太震撼了。',
         image: 'https://images.pexels.com/photos/2166711/pexels-photo-2166711.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3245,
-        comments: 1,
+        comments: _comments('7'),
         isLiked: true,
       ),
       Post(
@@ -115,7 +141,7 @@ class MockData {
         content: '水上屋的日落，清澈见底的海水，还有满天繁星。这就是天堂的样子吧！🌅',
         image: 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 5678,
-        comments: 5,
+        comments: _comments('8'),
         isLiked: true,
       ),
       Post(
@@ -126,7 +152,7 @@ class MockData {
         content: '在费瓦湖边看日出，远处的鱼尾峰若隐若现。这趟徒步之旅太值了！⛰️',
         image: 'https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2134,
-        comments: 0,
+        comments: _comments('9'),
         isLiked: false,
       ),
       Post(
@@ -137,7 +163,7 @@ class MockData {
         content: '漫步在小巷中，听着钢琴声，吃着海蛎煎。这座小岛充满了文艺气息。🎹',
         image: 'https://images.pexels.com/photos/1007426/pexels-photo-1007426.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 1567,
-        comments: 3,
+        comments: _comments('10'),
         isLiked: false,
       ),
       Post(
@@ -148,7 +174,7 @@ class MockData {
         content: '等了三天终于看到了极光！绿色的光带在天空中舞动，美到窒息！💚',
         image: 'https://images.pexels.com/photos/1933239/pexels-photo-1933239.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 4892,
-        comments: 4,
+        comments: _comments('11'),
         isLiked: true,
       ),
       Post(
@@ -159,7 +185,7 @@ class MockData {
         content: '在古城的石板路上走走停停，听着纳西古乐，时光仿佛慢了下来。🎵',
         image: 'https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2345,
-        comments: 2,
+        comments: _comments('12'),
         isLiked: false,
       ),
       Post(
@@ -170,7 +196,7 @@ class MockData {
         content: '骑着骆驼看日落，沙漠的金色和天空的橘红交织在一起，太壮观了！🐫',
         image: 'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3012,
-        comments: 6,
+        comments: _comments('13'),
         isLiked: true,
       ),
       Post(
@@ -181,7 +207,7 @@ class MockData {
         content: '夜晚的外滩灯火辉煌，黄浦江两岸的建筑美轮美奂。魔都的夜景名不虚传！🌃',
         image: 'https://images.pexels.com/photos/2412609/pexels-photo-2412609.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2678,
-        comments: 1,
+        comments: _comments('14'),
         isLiked: false,
       ),
       Post(
@@ -192,7 +218,7 @@ class MockData {
         content: '凌晨爬山看日出，云海翻腾，奇松怪石。黄山归来不看岳，果然名不虚传！🌄',
         image: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3456,
-        comments: 5,
+        comments: _comments('15'),
         isLiked: true,
       ),
       Post(
@@ -203,7 +229,7 @@ class MockData {
         content: '一望无际的大草原，成群的牛羊，还有热情的蒙古族朋友。这里是心灵的故乡！🐎',
         image: 'https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2234,
-        comments: 0,
+        comments: _comments('16'),
         isLiked: false,
       ),
       Post(
@@ -214,7 +240,7 @@ class MockData {
         content: '小桥流水人家，白墙黛瓦，乌篷船。江南水乡的韵味在这里展现得淋漓尽致。🚣',
         image: 'https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 1890,
-        comments: 3,
+        comments: _comments('17'),
         isLiked: false,
       ),
       Post(
@@ -225,7 +251,7 @@ class MockData {
         content: '三座神山、五色海、牛奶海...这里是最后的香格里拉，美得不真实！🏔️',
         image: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 4123,
-        comments: 4,
+        comments: _comments('18'),
         isLiked: true,
       ),
       Post(
@@ -236,7 +262,7 @@ class MockData {
         content: '碧海蓝天，椰林树影，还有新鲜的海鲜。在这里度假真的太惬意了！🏖️',
         image: 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2567,
-        comments: 2,
+        comments: _comments('19'),
         isLiked: false,
       ),
       Post(
@@ -247,7 +273,7 @@ class MockData {
         content: '站在兵马俑坑前，感受着两千多年前的历史气息。大秦帝国的辉煌令人震撼！🏛️',
         image: 'https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3234,
-        comments: 6,
+        comments: _comments('20'),
         isLiked: true,
       ),
       Post(
@@ -258,7 +284,7 @@ class MockData {
         content: '热带雨林的清晨，鸟鸣声此起彼伏。在这里感受大自然的原始魅力！🌴',
         image: 'https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 1987,
-        comments: 1,
+        comments: _comments('21'),
         isLiked: false,
       ),
       Post(
@@ -269,7 +295,7 @@ class MockData {
         content: '天生三桥的壮观，龙水峡地缝的神秘。大自然的鬼斧神工让人叹为观止！',
         image: 'https://images.pexels.com/photos/2166711/pexels-photo-2166711.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2789,
-        comments: 0,
+        comments: _comments('22'),
         isLiked: false,
       ),
       Post(
@@ -280,7 +306,7 @@ class MockData {
         content: '西湖十景，每一处都是一幅画。断桥残雪、雷峰夕照，美不胜收！🌊',
         image: 'https://images.pexels.com/photos/1007426/pexels-photo-1007426.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2456,
-        comments: 5,
+        comments: _comments('23'),
         isLiked: true,
       ),
       Post(
@@ -291,7 +317,7 @@ class MockData {
         content: '天空之镜名不虚传！湖面倒映着蓝天白云，分不清哪里是天哪里是地。📸',
         image: 'https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 5234,
-        comments: 3,
+        comments: _comments('24'),
         isLiked: true,
       ),
       Post(
@@ -302,8 +328,118 @@ class MockData {
         content: '夜晚的苗寨灯火通明，层层叠叠的吊脚楼美如画卷。苗族文化太迷人了！🏮',
         image: 'https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3567,
-        comments: 4,
+        comments: _comments('25'),
         isLiked: false,
+      ),
+      Post(
+        id: '26',
+        user: '茶山行者',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=tea260',
+        location: '福建 · 武夷山',
+        content: '九曲溪竹筏漂流，两岸奇峰林立，茶香随风飘来。武夷山大红袍值得细细品味！🍵',
+        image: 'https://images.pexels.com/photos/2166711/pexels-photo-2166711.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 1876,
+        comments: _comments('26'),
+        isLiked: false,
+      ),
+      Post(
+        id: '27',
+        user: '山水之间',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=guilin270',
+        location: '广西 · 桂林',
+        content: '漓江山水甲天下，从杨堤到兴坪一路都是绝景。20元人民币背景图就在这里！⛰️',
+        image: 'https://images.pexels.com/photos/1659438/pexels-photo-1659438.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 3124,
+        comments: _comments('27'),
+        isLiked: true,
+      ),
+      Post(
+        id: '28',
+        user: '沱江人家',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=fenghuang280',
+        location: '湖南 · 凤凰古城',
+        content: '沱江边的吊脚楼亮灯了，虹桥倒映在水中，湘西的夜色温柔而神秘。🏮',
+        image: 'https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 2345,
+        comments: _comments('28'),
+        isLiked: false,
+      ),
+      Post(
+        id: '29',
+        user: '色彩猎人',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=danxia290',
+        location: '甘肃 · 张掖丹霞',
+        content: '七彩丹霞在日落时分最为绚烂，像上帝打翻的调色盘。大西北的壮美震撼心灵！🎨',
+        image: 'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 4789,
+        comments: _comments('29'),
+        isLiked: true,
+      ),
+      Post(
+        id: '30',
+        user: '紫禁漫游',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=gugong300',
+        location: '北京 · 故宫',
+        content: '红墙黄瓦，太和殿前感受六百年历史。角楼日落是北京最经典的画面之一。🏛️',
+        image: 'https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 3890,
+        comments: _comments('30'),
+        isLiked: true,
+      ),
+      Post(
+        id: '31',
+        user: '珠江夜游',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=guangzhou310',
+        location: '广东 · 广州',
+        content: '广州塔小蛮腰灯光璀璨，珠江夜游吹来的风都带着美食香气。粤式早茶也不能错过！🌃',
+        image: 'https://images.pexels.com/photos/2412609/pexels-photo-2412609.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 2156,
+        comments: _comments('31'),
+        isLiked: false,
+      ),
+      Post(
+        id: '32',
+        user: '水墨徽州',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=hongcun320',
+        location: '安徽 · 宏村',
+        content: '月沼清晨，徽派白墙黛瓦倒映水面，像一幅流动的水墨画。写生的人络绎不绝。🖌️',
+        image: 'https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 2678,
+        comments: _comments('32'),
+        isLiked: false,
+      ),
+      Post(
+        id: '33',
+        user: '蓝眼泪',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=pingtan330',
+        location: '福建 · 平潭岛',
+        content: '深夜追逐蓝眼泪，荧光海浪拍打沙滩，像坠入银河。北部湾的玻璃海也美到失语！💙',
+        image: 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 5432,
+        comments: _comments('33'),
+        isLiked: true,
+      ),
+      Post(
+        id: '34',
+        user: '金色秋天',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ejina340',
+        location: '内蒙古 · 额济纳',
+        content: '十月的胡杨林金黄一片，怪树林的剪影在夕阳下格外苍劲。一年只美这二十天！🍂',
+        image: 'https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 3678,
+        comments: _comments('34'),
+        isLiked: true,
+      ),
+      Post(
+        id: '35',
+        user: '香格里拉',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=shangri350',
+        location: '云南 · 梅里雪山',
+        content: '清晨在飞来寺等日照金山，卡瓦格博峰被染成金色那一刻，所有等待都值得。🏔️',
+        image: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=800',
+        likes: 4123,
+        comments: _comments('35'),
+        isLiked: true,
       ),
     ];
   }
@@ -531,7 +667,7 @@ class MockData {
         content: '火锅、串串、兔头...成都的美食让我流连忘返，已经胖了5斤了哈哈！这家老字号火锅真的绝了，牛油锅底香到爆炸！🌶️🔥',
         image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2876,
-        comments: 4,
+        comments: _comments('food_1'),
         isLiked: false,
       ),
       Post(
@@ -542,7 +678,7 @@ class MockData {
         content: '早茶文化真的太棒了！虾饺、烧卖、肠粉、凤爪...每一样都是精品。一盅两件，慢慢叹！🥟',
         image: 'https://images.pexels.com/photos/1907228/pexels-photo-1907228.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 1956,
-        comments: 3,
+        comments: _comments('food_2'),
         isLiked: true,
       ),
       Post(
@@ -553,7 +689,7 @@ class MockData {
         content: '肉夹馍、凉皮、羊肉泡馍...西安的美食太有特色了！这家30年老店的肉夹馍，肉香四溢，外酥里嫩！😋',
         image: 'https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3245,
-        comments: 6,
+        comments: _comments('food_3'),
         isLiked: false,
       ),
       Post(
@@ -564,7 +700,7 @@ class MockData {
         content: '发现了一家超美的甜品店！抹茶千层、草莓蛋糕、马卡龙...每一款都是艺术品。拍照打卡必去！📸🍰',
         image: 'https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 4123,
-        comments: 5,
+        comments: _comments('food_4'),
         isLiked: true,
       ),
       Post(
@@ -575,7 +711,7 @@ class MockData {
         content: '海鲜大餐来啦！螃蟹、虾、扇贝、海胆...都是现捞现做，新鲜到爆！配上青岛啤酒，完美！🦀🍺',
         image: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2567,
-        comments: 2,
+        comments: _comments('food_5'),
         isLiked: false,
       ),
       Post(
@@ -586,7 +722,7 @@ class MockData {
         content: '正宗兰州拉面！一清二白三红四绿五黄，汤清味美，面条劲道。这才是真正的兰州牛肉面！🍜',
         image: 'https://images.pexels.com/photos/884600/pexels-photo-884600.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 1890,
-        comments: 1,
+        comments: _comments('food_6'),
         isLiked: false,
       ),
       Post(
@@ -597,7 +733,7 @@ class MockData {
         content: '东北烧烤yyds！羊肉串、板筋、鸡心、韭菜...撒上孜然辣椒，配上冰啤酒，这才是夏天的味道！🍖',
         image: 'https://images.pexels.com/photos/1410236/pexels-photo-1410236.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3456,
-        comments: 4,
+        comments: _comments('food_7'),
         isLiked: true,
       ),
       Post(
@@ -608,7 +744,7 @@ class MockData {
         content: '在西湖边找到了一家超棒的咖啡馆！手冲咖啡配上湖景，这个下午太惬意了。☕️🌊',
         image: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2234,
-        comments: 3,
+        comments: _comments('food_8'),
         isLiked: false,
       ),
     ];
@@ -625,7 +761,7 @@ class MockData {
         content: '和你一起漫步在鼓浪屿的小巷中，听着钢琴声，吃着海蛎煎。有你的地方就是最美的风景。💑🎹',
         image: 'https://images.pexels.com/photos/1007426/pexels-photo-1007426.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 5678,
-        comments: 6,
+        comments: _comments('couple_1'),
         isLiked: true,
       ),
       Post(
@@ -636,7 +772,7 @@ class MockData {
         content: '在埃菲尔铁塔下许下爱的誓言。Paris is always a good idea! 💕🗼',
         image: 'https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 8901,
-        comments: 5,
+        comments: _comments('couple_2'),
         isLiked: true,
       ),
       Post(
@@ -647,7 +783,7 @@ class MockData {
         content: '牵着你的手走在丽江古城的石板路上，听着纳西古乐，时光仿佛慢了下来。愿时光不老，我们不散。🌙',
         image: 'https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 4567,
-        comments: 4,
+        comments: _comments('couple_3'),
         isLiked: false,
       ),
       Post(
@@ -658,7 +794,7 @@ class MockData {
         content: '和你一起坐热气球看日出，俯瞰整个卡帕多奇亚。这是我们最浪漫的回忆！🎈☀️',
         image: 'https://images.pexels.com/photos/2507007/pexels-photo-2507007.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 7234,
-        comments: 3,
+        comments: _comments('couple_4'),
         isLiked: true,
       ),
       Post(
@@ -669,7 +805,7 @@ class MockData {
         content: '在海边看日落，脚踩细沙，海风轻拂。和你在一起的每一刻都是最美的时光。🌅💙',
         image: 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3890,
-        comments: 2,
+        comments: _comments('couple_5'),
         isLiked: false,
       ),
       Post(
@@ -680,7 +816,7 @@ class MockData {
         content: '樱花树下的约定，穿着和服和你一起赏樱。粉色的花瓣飘落，美得像梦一样。🌸👘',
         image: 'https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 6543,
-        comments: 6,
+        comments: _comments('couple_6'),
         isLiked: true,
       ),
       Post(
@@ -691,7 +827,7 @@ class MockData {
         content: '在世界上最美的星空下，和你一起数星星。这里是全球最佳观星地，浪漫到极致！✨🌌',
         image: 'https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 5234,
-        comments: 1,
+        comments: _comments('couple_7'),
         isLiked: false,
       ),
     ];
@@ -708,7 +844,7 @@ class MockData {
         content: '带宝贝来迪士尼，看到她开心的笑容，所有的疲惫都值得了！童话世界真的太梦幻了！🏰✨',
         image: 'https://images.pexels.com/photos/2506988/pexels-photo-2506988.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 4567,
-        comments: 5,
+        comments: _comments('family_1'),
         isLiked: true,
       ),
       Post(
@@ -719,7 +855,7 @@ class MockData {
         content: '带孩子游故宫，给他讲历史故事。看着他好奇的眼神，觉得这趟旅行太有意义了！🏛️📚',
         image: 'https://images.pexels.com/photos/2166559/pexels-photo-2166559.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3456,
-        comments: 4,
+        comments: _comments('family_2'),
         isLiked: false,
       ),
       Post(
@@ -730,7 +866,7 @@ class MockData {
         content: '孩子第一次这么近距离看到长颈鹿和大熊猫，兴奋得不得了！亲子游就要选这种寓教于乐的地方！🦒🐼',
         image: 'https://images.pexels.com/photos/1661535/pexels-photo-1661535.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 5234,
-        comments: 6,
+        comments: _comments('family_3'),
         isLiked: true,
       ),
       Post(
@@ -741,7 +877,7 @@ class MockData {
         content: '带宝贝看海洋生物，他对鲨鱼和海豚特别感兴趣。海底隧道真的太震撼了！🦈🐬',
         image: 'https://images.pexels.com/photos/3046637/pexels-photo-3046637.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2890,
-        comments: 3,
+        comments: _comments('family_4'),
         isLiked: false,
       ),
       Post(
@@ -752,7 +888,7 @@ class MockData {
         content: '带孩子坐竹筏游漓江，让他感受大自然的美。山水如画，这就是最好的课堂！⛰️🚣',
         image: 'https://images.pexels.com/photos/1659438/pexels-photo-1659438.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3678,
-        comments: 2,
+        comments: _comments('family_5'),
         isLiked: true,
       ),
       Post(
@@ -763,7 +899,7 @@ class MockData {
         content: '科技馆真的太适合带孩子来了！各种互动体验，寓教于乐。孩子玩得开心，还学到了知识！🔬🤖',
         image: 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 2456,
-        comments: 1,
+        comments: _comments('family_6'),
         isLiked: false,
       ),
       Post(
@@ -774,7 +910,7 @@ class MockData {
         content: '周末带孩子来农场体验，喂小动物、采摘蔬菜、做手工。远离城市喧嚣，享受田园生活！🐓🌾',
         image: 'https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 4123,
-        comments: 4,
+        comments: _comments('family_7'),
         isLiked: true,
       ),
     ];
@@ -791,7 +927,7 @@ class MockData {
         content: '云雾缭绕的山峰，简直是摄影师的天堂！玻璃栈道上的每一个角度都能拍出大片。📷⛰️',
         image: 'https://images.pexels.com/photos/2166711/pexels-photo-2166711.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 6789,
-        comments: 5,
+        comments: _comments('photo_1'),
         isLiked: true,
       ),
       Post(
@@ -802,7 +938,7 @@ class MockData {
         content: '天空之镜！湖面倒映着蓝天白云，分不清哪里是天哪里是地。摄影师必打卡地！🌅💙',
         image: 'https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 8901,
-        comments: 6,
+        comments: _comments('photo_2'),
         isLiked: true,
       ),
       Post(
@@ -813,7 +949,7 @@ class MockData {
         content: '雪山、蓝天、白云，完美的人像拍摄背景！这里的光线和色彩太适合拍照了！📸❄️',
         image: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 5678,
-        comments: 4,
+        comments: _comments('photo_3'),
         isLiked: false,
       ),
       Post(
@@ -824,7 +960,7 @@ class MockData {
         content: '在海拔4718米拍摄星空，银河清晰可见。这里是摄影师的朝圣地！✨🌌',
         image: 'https://images.pexels.com/photos/1933239/pexels-photo-1933239.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 7234,
-        comments: 3,
+        comments: _comments('photo_4'),
         isLiked: true,
       ),
       Post(
@@ -835,7 +971,7 @@ class MockData {
         content: '夜晚的外滩，灯火辉煌。黄浦江两岸的建筑美轮美奂，是城市摄影的绝佳地点！🌃🏙️',
         image: 'https://images.pexels.com/photos/2412609/pexels-photo-2412609.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 4567,
-        comments: 2,
+        comments: _comments('photo_5'),
         isLiked: false,
       ),
       Post(
@@ -846,7 +982,7 @@ class MockData {
         content: '凌晨4点爬山等日出，云海翻腾的瞬间太震撼了！所有的辛苦都值得！🌄☁️',
         image: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 6543,
-        comments: 6,
+        comments: _comments('photo_6'),
         isLiked: true,
       ),
       Post(
@@ -857,7 +993,7 @@ class MockData {
         content: '小桥流水人家，白墙黛瓦，乌篷船。江南水乡的韵味在镜头下展现得淋漓尽致！🚣🏮',
         image: 'https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 3890,
-        comments: 1,
+        comments: _comments('photo_7'),
         isLiked: false,
       ),
       Post(
@@ -868,7 +1004,7 @@ class MockData {
         content: '等了三天终于拍到了极光大爆发！绿色的光带在天空中舞动，美到窒息！💚🌌',
         image: 'https://images.pexels.com/photos/1933239/pexels-photo-1933239.jpeg?auto=compress&cs=tinysrgb&w=800',
         likes: 9876,
-        comments: 5,
+        comments: _comments('photo_8'),
         isLiked: true,
       ),
     ];

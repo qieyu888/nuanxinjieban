@@ -7,11 +7,13 @@ import '../screens/post_detail_screen.dart';
 class PostCard extends StatelessWidget {
   final Post post;
   final VoidCallback onLike;
+  final VoidCallback? onPostUpdated;
 
   const PostCard({
     super.key,
     required this.post,
     required this.onLike,
+    this.onPostUpdated,
   });
 
   void _showMoreOptions(BuildContext context) {
@@ -219,10 +221,10 @@ class PostCard extends StatelessWidget {
     );
     
     if (updatedPost != null) {
-      // 更新帖子数据
       post.likes = updatedPost.likes;
       post.comments = updatedPost.comments;
       post.isLiked = updatedPost.isLiked;
+      onPostUpdated?.call();
     }
   }
 

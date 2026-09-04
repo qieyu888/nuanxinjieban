@@ -120,6 +120,7 @@ class FeedTabState extends State<FeedTab> {
                 child: PostCard(
                   post: _posts[index],
                   onLike: () => _onLikePost(_posts[index].id),
+                  onPostUpdated: () => setState(() {}),
                 ),
               );
             },

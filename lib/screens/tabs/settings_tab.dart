@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 import '../../constants/colors.dart';
 import '../../data/mock_data.dart';
+import '../../services/cache_service.dart';
 import '../star_shop_screen.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -14,12 +15,32 @@ class SettingsTab extends StatefulWidget {
 
 class _SettingsTabState extends State<SettingsTab> {
   late String _randomQuote;
+  String _cacheSizeText = '计算中...';
+  bool _isClearingCache = false;
 
   @override
   void initState() {
     super.initState();
     final quotes = MockData.getQuotes();
     _randomQuote = quotes[Random().nextInt(quotes.length)];
+    _loadCacheSize();
+  }
+
+  Future<void> _loadCacheSize() async {
+    try {
+      final size = await CacheService.getCacheSize();
+      if (mounted) {
+        setState(() {
+          _cacheSizeText = CacheService.formatSize(size);
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _cacheSizeText = '未知';
+        });
+      }
+    }
   }
 
   @override
@@ -177,8 +198,8 @@ class _SettingsTabState extends State<SettingsTab> {
                   _SettingItem(
                     icon: Icons.storage_outlined,
                     label: '清除缓存',
-                    value: '124.5 MB',
-                    onTap: () => _showClearCache(context),
+                    value: _isClearingCache ? '清理中...' : _cacheSizeText,
+                    onTap: _isClearingCache ? null : () => _showClearCache(context),
                   ),
                   _SettingItem(
                     icon: Icons.feedback_outlined,
@@ -528,27 +549,60 @@ class _SettingsTabState extends State<SettingsTab> {
   void _showClearCache(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text('清除缓存'),
-        content: const Text('确定要清除 124.5 MB 的缓存数据吗？'),
+        content: Text(
+          _cacheSizeText == '0 B'
+              ? '当前没有可清理的缓存数据。'
+              : '确定要清除 $_cacheSizeText 的缓存数据吗？\n\n将清理图片缓存和临时文件，不会删除账号设置和星星余额。',
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('取消'),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('缓存清除成功')),
-              );
-            },
+            onPressed: _cacheSizeText == '0 B'
+                ? null
+                : () async {
+                    Navigator.pop(dialogContext);
+                    await _clearCache();
+                  },
             child: const Text('确定'),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _clearCache() async {
+    setState(() {
+      _isClearingCache = true;
+    });
+
+    try {
+      await CacheService.clearCache();
+      await _loadCacheSize();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('缓存清除成功，当前缓存 $_cacheSizeText')),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('缓存清除失败，请稍后重试')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isClearingCache = false;
+        });
+      }
+    }
   }
 
   // 意见反馈
