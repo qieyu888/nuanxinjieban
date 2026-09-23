@@ -230,7 +230,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   ),
                   _SettingItem(
                     icon: Icons.info_outline,
-                    label: '关于暖途',
+                    label: '关于同城陌缘',
                     value: 'v1.0.1',
                     onTap: () => _showAbout(context),
                   ),
@@ -246,7 +246,7 @@ class _SettingsTabState extends State<SettingsTab> {
               Column(
                 children: [
                   Text(
-                    'WARMTRIP',
+                    '同城陌缘',
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -759,10 +759,10 @@ class _SettingsTabState extends State<SettingsTab> {
         title: const Text('用户协议'),
         content: const SingleChildScrollView(
           child: Text(
-            '暖途用户协议\n\n'
-            '欢迎使用暖途！\n\n'
+            '同城陌缘用户协议\n\n'
+            '欢迎使用同城陌缘！\n\n'
             '1. 服务条款\n'
-            '暖途是一个旅行社交平台，致力于为用户提供优质的旅行分享和交流服务。\n\n'
+            '同城陌缘是一个旅行社交平台，致力于为用户提供优质的旅行分享和交流服务。\n\n'
             '2. 用户权利\n'
             '用户有权发布旅行内容、评论互动、使用AI助手等功能。\n\n'
             '3. 用户义务\n'
@@ -793,7 +793,7 @@ class _SettingsTabState extends State<SettingsTab> {
         title: const Text('隐私政策'),
         content: const SingleChildScrollView(
           child: Text(
-            '暖途隐私政策\n\n'
+            '同城陌缘隐私政策\n\n'
             '更新日期：2026年1月\n\n'
             '1. 信息收集\n'
             '我们会收集您的基本信息、使用数据等，用于提供更好的服务。\n\n'
@@ -824,7 +824,7 @@ class _SettingsTabState extends State<SettingsTab> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('关于暖途'),
+        title: const Text('关于同城陌缘'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -843,7 +843,7 @@ class _SettingsTabState extends State<SettingsTab> {
             ),
             const SizedBox(height: 16),
             const Text(
-              '暖途',
+              '同城陌缘',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -871,7 +871,7 @@ class _SettingsTabState extends State<SettingsTab> {
             const Divider(),
             const SizedBox(height: 8),
             const Text(
-              '© 2026 WarmTrip. All rights reserved.',
+              '© 2026 同城陌缘. All rights reserved.',
               style: TextStyle(
                 fontSize: 11,
                 color: AppColors.textLight,
