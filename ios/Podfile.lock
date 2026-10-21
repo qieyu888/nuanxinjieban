@@ -1,4 +1,5 @@
 PODS:
+  - BDASignalSDK (2.0.0)
   - Flutter (1.0.0)
   - image_picker_ios (0.0.1):
     - Flutter
@@ -10,10 +11,15 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - BDASignalSDK
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+
+SPEC REPOS:
+  trunk:
+    - BDASignalSDK
 
 EXTERNAL SOURCES:
   Flutter:
@@ -26,11 +32,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
+  BDASignalSDK: 63bd1fd37db572a9a02687147af71a7d59f0e209
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
   in_app_purchase_storekit: 22cca7d08eebca9babdf4d07d0baccb73325d3c8
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
 
-PODFILE CHECKSUM: 3c63482e143d1b91d2d2560aee9fb04ecc74ac7e
+PODFILE CHECKSUM: ff6479d8b8b39ae74e223c08cf23c44c9e474460
 
 COCOAPODS: 1.16.2
